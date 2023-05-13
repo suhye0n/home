@@ -1,30 +1,40 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login as auth_login
 from django.utils import timezone
 from .models import Order
+from .forms import CustomUserCreationForm
+from .forms import CustomUserLoginForm
+from django.contrib.auth import get_user_model
 
 @api_view(['POST'])
 def user_login(request):
-    username = request.data.get('username')
-    password = request.data.get('password')
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        auth_login(request, user)
-        return Response(status=status.HTTP_200_OK)
-    else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    form = CustomUserLoginForm(request.data)
+    if form.is_valid():
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        
+        # 커스텀 인증 백엔드를 사용하여 사용자 인증 처리
+        UserModel = get_user_model()
+        user = UserModel.objects.get(username=username)
+        if user.check_password(password):
+            auth_login(request, user)
+            return Response(status=status.HTTP_200_OK)
+    
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 def signup(request):
-    form = UserCreationForm(request.data)
+    form = CustomUserCreationForm(request.data)
     if form.is_valid():
-        form.save()
+        user = form.save()
+        auth_login(request, user)
         return Response(status=status.HTTP_201_CREATED)
     else:
         return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def place_order(request):

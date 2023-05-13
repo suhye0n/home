@@ -17,39 +17,39 @@ const SignUpPage = () => {
         password2,
       });
 
-      // 회원가입 성공 시 처리할 로직 작성
+      // User registration successful
       console.log(response.data);
     } catch (error) {
-      // 회원가입 실패 시 처리할 로직 작성
+      // User registration failed
       console.error(error);
-      setError("회원가입에 실패했습니다.");
+      setError("Failed to register. Please try again.");
     }
   };
 
   return (
     <div>
-      <h2>회원가입</h2>
+      <h2>Sign Up</h2>
       {error && <p>{error}</p>}
       <form onSubmit={handleSignUp}>
         <input
           type="text"
-          placeholder="사용자명"
+          placeholder="Username"
           value={username}
           onChange={e => setUsername(e.target.value)}
         />
         <input
           type="password"
-          placeholder="비밀번호"
+          placeholder="Password"
           value={password1}
           onChange={e => setPassword1(e.target.value)}
         />
         <input
           type="password"
-          placeholder="비밀번호 확인"
+          placeholder="Confirm Password"
           value={password2}
           onChange={e => setPassword2(e.target.value)}
         />
-        <button type="submit">회원가입</button>
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );
