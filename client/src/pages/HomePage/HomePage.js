@@ -1,51 +1,83 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./HomePage.css";
+import Image1 from "../../assets/불닭쌈.jpg";
 
 const HomePage = () => {
+  const [currentCategory, setCurrentCategory] = useState("recommend");
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedFood, setSelectedFood] = useState("");
   const [orderStatus, setOrderStatus] = useState("");
+  const [selectedFoodsList, setSelectedFoodsList] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+  const [totalPoints, setTotalPoints] = useState(0);
 
-  const categories = [
-    {
-      name: "추천상품",
-      foods: [
-        { name: "김치볶음밥", points: 5, image: "image-url" },
-        { name: "추천음식1", points: 3, image: "image-url" },
-        { name: "추천음식2", points: 4, image: "image-url" },
-        // ... Add more foods for 추천상품 category
-      ],
-    },
-    {
-      name: "밥류",
-      foods: [
-        { name: "볶음밥", points: 5, image: "image-url" },
-        { name: "짜장밥", points: 3, image: "image-url" },
-        { name: "짬뽕밥", points: 4, image: "image-url" },
-        // ... Add more foods for 밥류 category
-      ],
-    },
-    {
-      name: "음료",
-      foods: [
-        { name: "콜라", points: 5, image: "image-url" },
-        { name: "사이다", points: 3, image: "image-url" },
-        { name: "환타", points: 4, image: "image-url" },
-        // ... Add more foods for 음료 category
-      ],
-    },
-    // ... Add other categories with foods and images
-  ];
+  const categories = {
+    recommend: [
+      // 추천상품 데이터
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      { name: "음식 이름1", image: "이미지 URL", points: "2" },
+      { name: "음식 이름2", image: "이미지 URL", points: "1" },
+      { name: "음식 이름3", image: "이미지 URL", points: "4" },
+      { name: "음식 이름4", image: "이미지 URL", points: "5" },
+    ],
+    rice: [
+      // 밥류 데이터
+      { name: "음식 이름", image: "이미지 URL", points: "포인트" },
+    ],
+    beverage: [
+      // 음료 데이터
+      { name: "음식 이름", image: "이미지 URL", points: "포인트" },
+    ],
+    snack: [
+      // 간식 데이터
+      { name: "음식 이름", image: "이미지 URL", points: "포인트" },
+    ],
+    snack: [
+      // 과자 데이터
+      { name: "음식 이름", image: "이미지 URL", points: "포인트" },
+    ],
+    ramen: [
+      // 컵라면 데이터
+      { name: "음식 이름", image: "이미지 URL", points: "포인트" },
+    ],
+    other: [
+      // 기타 데이터
+      { name: "음식 이름", image: "이미지 URL", points: "포인트" },
+    ],
+  };
+
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+  };
+
+  const handleCategoryChange = category => {
+    setCurrentCategory(category);
+  };
 
   const handleOrder = async () => {
     try {
       const response = await axios.post("http://localhost:8000/api/orders/", {
         category: selectedCategory,
         food: selectedFood,
+        quantity: quantity,
       });
       setOrderStatus(response.data.message);
+      // Clear selected food and quantity after successful order
+      setSelectedFood("");
+      setQuantity(1);
     } catch (error) {
       console.error(error);
       setOrderStatus("주문에 실패했습니다.");
@@ -61,6 +93,35 @@ const HomePage = () => {
     setSelectedCategory("");
     setSelectedFood("");
     setOrderStatus("");
+    setSelectedFoodsList([]);
+    setTotalPoints(0);
+  };
+
+  const handleFoodSelect = food => {
+    setSelectedFood(food);
+  };
+
+  const handleQuantityChange = e => {
+    setQuantity(parseInt(e.target.value));
+  };
+
+  const handleAddToCart = () => {
+    const selectedFoodItem = {
+      food: selectedFood,
+      quantity: quantity,
+      points: selectedFood.points * quantity,
+    };
+    setSelectedFoodsList([...selectedFoodsList, selectedFoodItem]);
+    setTotalPoints(totalPoints + selectedFoodItem.points);
+    setSelectedFood("");
+    setQuantity(1);
+  };
+
+  const handleRemoveFromCart = index => {
+    const updatedSelectedFoodsList = [...selectedFoodsList];
+    const removedFood = updatedSelectedFoodsList.splice(index, 1)[0];
+    setTotalPoints(totalPoints - removedFood.points);
+    setSelectedFoodsList(updatedSelectedFoodsList);
   };
 
   return (
@@ -70,31 +131,59 @@ const HomePage = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <h3>음식 주문</h3>
-            <select
-              value={selectedCategory}
-              onChange={e => setSelectedCategory(e.target.value)}>
-              <option value="">카테고리 선택</option>
-              {categories.map(category => (
-                <option key={category.name} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <div className="grid">
-              {selectedCategory &&
-                categories
-                  .find(category => category.name === selectedCategory)
-                  .foods.map((food, index) => (
-                    <div key={index} className="food-card">
-                      <img src={food.image} alt={food.name} />
-                      <p>{food.name}</p>
-                      <p>포인트: {food.points}</p>
-                      <button onClick={() => setSelectedFood(food.name)}>
-                        선택
-                      </button>
+            <div className="category-buttons">
+              <button
+                className={currentCategory === "recommend" ? "active" : ""}
+                onClick={() => handleCategoryChange("recommend")}>
+                추천상품
+              </button>
+              <button
+                className={currentCategory === "rice" ? "active" : ""}
+                onClick={() => handleCategoryChange("rice")}>
+                밥류
+              </button>
+              <button
+                className={currentCategory === "beverage" ? "active" : ""}
+                onClick={() => handleCategoryChange("beverage")}>
+                음료
+              </button>
+              <button
+                className={currentCategory === "snack" ? "active" : ""}
+                onClick={() => handleCategoryChange("snack")}>
+                간식
+              </button>
+              <button
+                className={currentCategory === "snack" ? "active" : ""}
+                onClick={() => handleCategoryChange("snack")}>
+                과자
+              </button>
+              <button
+                className={currentCategory === "ramen" ? "active" : ""}
+                onClick={() => handleCategoryChange("ramen")}>
+                컵라면
+              </button>
+              <button
+                className={currentCategory === "other" ? "active" : ""}
+                onClick={() => handleCategoryChange("other")}>
+                기타
+              </button>
+            </div>
+            <div className="food-slider">
+              <Slider {...sliderSettings}>
+                {categories[currentCategory].map((food, index) => (
+                  <div key={index} className="food-item">
+                    <img
+                      className="food-img"
+                      src={food.image}
+                      alt={food.name}
+                    />
+                    <div className="food-info">
+                      <h3>{food.name}</h3>
+                      <p>{food.points} 포인트</p>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </Slider>
             </div>
             <button onClick={handleOrder}>주문</button>
             {orderStatus && <p>{orderStatus}</p>}

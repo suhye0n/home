@@ -27,7 +27,7 @@
     text-align: center;
 }
 
-.food-card img {
+.food-img {
     width: 100px;
     height: 100px;
     object-fit: cover;
