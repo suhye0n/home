@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -13,8 +13,8 @@ const HomePage = () => {
   const [selectedFood, setSelectedFood] = useState("");
   const [orderStatus, setOrderStatus] = useState("");
   const [selectedFoodsList, setSelectedFoodsList] = useState([]);
-  const [quantity, setQuantity] = useState(1);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [currentPoints, setCurrentPoints] = useState(0);
 
   const categories = {
     recommend: [
@@ -72,12 +72,8 @@ const HomePage = () => {
       const response = await axios.post("http://localhost:8000/api/orders/", {
         category: selectedCategory,
         food: selectedFood,
-        quantity: quantity,
       });
       setOrderStatus(response.data.message);
-      // Clear selected food and quantity after successful order
-      setSelectedFood("");
-      setQuantity(1);
     } catch (error) {
       console.error(error);
       setOrderStatus("주문에 실패했습니다.");
@@ -93,40 +89,70 @@ const HomePage = () => {
     setSelectedCategory("");
     setSelectedFood("");
     setOrderStatus("");
-    setSelectedFoodsList([]);
-    setTotalPoints(0);
   };
 
   const handleFoodSelect = food => {
-    setSelectedFood(food);
-  };
-
-  const handleQuantityChange = e => {
-    setQuantity(parseInt(e.target.value));
-  };
-
-  const handleAddToCart = () => {
-    const selectedFoodItem = {
-      food: selectedFood,
-      quantity: quantity,
-      points: selectedFood.points * quantity,
+    const selectedFood = {
+      name: food.name,
+      image: food.image,
+      points: food.points,
+      quantity: 1,
     };
-    setSelectedFoodsList([...selectedFoodsList, selectedFoodItem]);
-    setTotalPoints(totalPoints + selectedFoodItem.points);
-    setSelectedFood("");
-    setQuantity(1);
+    setSelectedFoodsList(prevList => [...prevList, selectedFood]);
+    setTotalPoints(prevPoints => prevPoints + parseInt(food.points));
   };
 
-  const handleRemoveFromCart = index => {
-    const updatedSelectedFoodsList = [...selectedFoodsList];
-    const removedFood = updatedSelectedFoodsList.splice(index, 1)[0];
-    setTotalPoints(totalPoints - removedFood.points);
-    setSelectedFoodsList(updatedSelectedFoodsList);
+  const handleQuantityChange = (index, action) => {
+    const updatedList = [...selectedFoodsList];
+    const currentFood = updatedList[index];
+
+    if (action === "increment") {
+      currentFood.quantity += 1;
+    } else if (action === "decrement" && currentFood.quantity > 1) {
+      currentFood.quantity -= 1;
+    }
+
+    currentFood.points = parseInt(currentFood.points) * currentFood.quantity;
+    const updatedTotalPoints = updatedList.reduce(
+      (total, food) => total + parseInt(food.points),
+      0
+    );
+
+    setSelectedFoodsList(updatedList);
+    setTotalPoints(updatedTotalPoints);
   };
+
+  const handleRemoveFood = index => {
+    const updatedList = [...selectedFoodsList];
+    const removedFood = updatedList.splice(index, 1)[0];
+
+    setTotalPoints(
+      prevPoints =>
+        prevPoints - parseInt(removedFood.points) * removedFood.quantity
+    );
+    setSelectedFoodsList(updatedList);
+  };
+
+  useEffect(() => {
+    // 현재 포인트를 가져오는 API 호출
+    const fetchCurrentPoints = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/current_points/"
+        );
+        setCurrentPoints(response.data.points);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCurrentPoints();
+  }, []);
 
   return (
     <div>
       <h2>음식 주문하기</h2>
+      <div className="current-points">현재 포인트: {currentPoints}</div>
       <button onClick={openModal}>주문하기</button>
       {showModal && (
         <div className="modal">
@@ -171,7 +197,10 @@ const HomePage = () => {
             <div className="food-slider">
               <Slider {...sliderSettings}>
                 {categories[currentCategory].map((food, index) => (
-                  <div key={index} className="food-item">
+                  <div
+                    key={index}
+                    className="food-item"
+                    onClick={() => handleFoodSelect(food)}>
                     <img
                       className="food-img"
                       src={food.image}
@@ -184,6 +213,38 @@ const HomePage = () => {
                   </div>
                 ))}
               </Slider>
+            </div>
+            <div className="selected-foods-list">
+              <h3>선택한 음식</h3>
+              {selectedFoodsList.map((food, index) => (
+                <div key={index} className="selected-food-item">
+                  <div className="selected-food-info">
+                    <h4>{food.name}</h4>
+                    <p>포인트: {food.points}</p>
+                    <div className="food-quantity">
+                      <button
+                        className="quantity-btn"
+                        onClick={() =>
+                          handleQuantityChange(index, "decrement")
+                        }>
+                        -
+                      </button>
+                      <span className="quantity">{food.quantity}</span>
+                      <button
+                        className="quantity-btn"
+                        onClick={() =>
+                          handleQuantityChange(index, "increment")
+                        }>
+                        +
+                      </button>
+                    </div>
+                    <button onClick={() => handleRemoveFood(index)}>
+                      삭제
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <p>총 주문 포인트: {totalPoints}</p>
             </div>
             <button onClick={handleOrder}>주문</button>
             {orderStatus && <p>{orderStatus}</p>}
