@@ -5,8 +5,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./HomePage.css";
 import Image1 from "../../assets/불닭쌈.jpg";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [currentCategory, setCurrentCategory] = useState("recommend");
   const [showModal, setShowModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -71,19 +73,30 @@ const HomePage = () => {
     try {
       const menuNames = selectedFoodsList.map(food => food.name);
       const quantities = selectedFoodsList.map(food => food.quantity);
-
-      const response = await axios.post(
-        "http://localhost:8000/api/place_order/",
-        {
-          selectedFoodsList: selectedFoodsList, // 수정: selectedFoodsList 전체를 보내줌
-          menu_names: menuNames,
-          quantities: quantities,
-          order_number: "0",
-          customer_name: "고객명", // 실제 고객명으로 변경
-        }
+      const totalOrderPoints = selectedFoodsList.reduce(
+        (total, food) => total + parseInt(food.points) * food.quantity,
+        0
       );
 
-      setOrderStatus(response.data.message);
+      if (totalOrderPoints <= currentPoints) {
+        const response = await axios.post(
+          "http://localhost:8000/api/place_order/",
+          {
+            selectedFoodsList: selectedFoodsList,
+            menu_names: menuNames,
+            quantities: quantities,
+            order_number: "0",
+            customer_name: "고객명",
+          }
+        );
+
+        setOrderStatus(response.data.message);
+        setCurrentPoints(prevPoints => prevPoints - totalOrderPoints);
+        setSelectedFoodsList([]);
+        setTotalPoints(0);
+      } else {
+        alert("포인트가 부족하여 주문할 수 없습니다.");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -98,6 +111,8 @@ const HomePage = () => {
     setSelectedCategory("");
     setSelectedFood("");
     setOrderStatus("");
+    setSelectedFoodsList([]);
+    setTotalPoints(0);
   };
 
   const handleFoodSelect = food => {
@@ -121,7 +136,9 @@ const HomePage = () => {
       currentFood.quantity -= 1;
     }
 
-    currentFood.points = parseInt(currentFood.points) * currentFood.quantity;
+    const updatedPoints = parseInt(currentFood.points) * currentFood.quantity;
+    currentFood.points = updatedPoints;
+
     const updatedTotalPoints = updatedList.reduce(
       (total, food) => total + parseInt(food.points),
       0
@@ -143,25 +160,47 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    // 현재 포인트를 가져오는 API 호출
-    const fetchCurrentPoints = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/current_points/"
-        );
-        setCurrentPoints(response.data.points);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchCurrentPoints();
+    const currentPointsFromStorage = localStorage.getItem("currentPoints");
+    if (currentPointsFromStorage) {
+      setCurrentPoints(parseInt(currentPointsFromStorage));
+    }
+
+    const isLogin = localStorage.getItem("isLogin");
+    console.log("isLogin value:", isLogin);
+
+    if (isLogin.trim() !== "true") {
+      navigate("/login");
+    }
   }, []);
 
   return (
     <div>
-      <h2>음식 주문하기</h2>
-      <div className="current-points">현재 포인트: {currentPoints}</div>
-      <button onClick={openModal}>주문하기</button>
+      <h2 className="title">수현이네 집</h2>
+      <button onClick={openModal} className="button">
+        주문하기
+      </button>
+      <button
+        onClick={() => {
+          window.location.href = "https://carp.tistory.com";
+        }}
+        className="button">
+        일기 보기
+      </button>
+      <button
+        onClick={() => {
+          window.location.href = "https://carp.tistory.com/guestbook";
+        }}
+        className="button">
+        방명록 남기기
+      </button>
+      <button
+        onClick={() => {
+          localStorage.setItem("isLogin", false);
+          window.location.href = "/login";
+        }}
+        className="button">
+        로그아웃 하기
+      </button>
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -203,6 +242,7 @@ const HomePage = () => {
               </button>
             </div>
             <div className="food-slider">
+              <div className="current-points">현재 포인트: {currentPoints}</div>
               <Slider {...sliderSettings}>
                 {categories[currentCategory].map((food, index) => (
                   <div

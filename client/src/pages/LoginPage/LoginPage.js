@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import "./LoginPage.css";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,6 +18,12 @@ const LoginPage = () => {
         password,
       });
 
+      // Save currentPoints to localStorage
+      localStorage.setItem("currentPoints", "100");
+      localStorage.setItem("isLogin", true);
+
+      navigate("/");
+
       // Handle successful login here (e.g., redirect to another page)
       console.log(response.data);
     } catch (error) {
@@ -27,7 +36,7 @@ const LoginPage = () => {
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <form className="login-container" onSubmit={handleLogin}>
         <input
           type="text"
           placeholder="Username"
@@ -42,6 +51,7 @@ const LoginPage = () => {
         />
         <button type="submit">Login</button>
         {error && <p>{error}</p>}
+        <Link to="/signup">회원가입</Link>
       </form>
     </div>
   );

@@ -1,13 +1,20 @@
+.title {
+    font-family: 'ARCHISCULPTURE_v200' !important;
+    font-size: 80px;
+}
+
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #fff;
-    width: 400px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 850px;
+    width: 90%;
+    height: 90%;
+    overflow: hidden;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 7px 7px 30px #ccc;
 }
 
 .grid {
@@ -36,4 +43,36 @@
 
 .food-card p {
     margin: 10px 0;
+}
+
+.button {
+    position: relative;
+    width: 300px;
+    padding: 16px;
+    border: none;
+    border-bottom: 5px solid #ad7900;
+    border-radius: 8px;
+    background: #fab70f;
+    color: white;
+    font-size: 2.4rem;
+    font-weight: bold;
+    font-family: 'Raleway', sans-serif;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+    outline: none;
+    cursor: pointer;
+    transition-property: background, color;
+    transition-duration: 0.2s;
+
+    &:hover {
+        background: #d49b0d;
+        border-bottom-color: #946800;
+        color: #eee;
+    }
+
+    &:active {
+        bottom: -3px;
+        border-bottom: 2px solid #543c00;
+        background: #a17300;
+        color: #ada48b;
+    }
 }
