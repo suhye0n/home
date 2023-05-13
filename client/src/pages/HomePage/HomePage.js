@@ -69,14 +69,23 @@ const HomePage = () => {
 
   const handleOrder = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/api/orders/", {
-        category: selectedCategory,
-        food: selectedFood,
-      });
+      const menuNames = selectedFoodsList.map(food => food.name);
+      const quantities = selectedFoodsList.map(food => food.quantity);
+
+      const response = await axios.post(
+        "http://localhost:8000/api/place_order/",
+        {
+          selectedFoodsList: selectedFoodsList, // 수정: selectedFoodsList 전체를 보내줌
+          menu_names: menuNames,
+          quantities: quantities,
+          order_number: "0",
+          customer_name: "고객명", // 실제 고객명으로 변경
+        }
+      );
+
       setOrderStatus(response.data.message);
     } catch (error) {
       console.error(error);
-      setOrderStatus("주문에 실패했습니다.");
     }
   };
 
@@ -145,7 +154,6 @@ const HomePage = () => {
         console.error(error);
       }
     };
-
     fetchCurrentPoints();
   }, []);
 
