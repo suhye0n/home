@@ -189,7 +189,6 @@ body {
 #header .intro,
 #header .sns,
 #header .theme,
-#header .battery,
 #header .clock,
 #header .side {
     min-height: 40px;
@@ -215,9 +214,9 @@ body {
     align-items: center;
 }
 
-/* 타이틀 */
-#header .title {
+h2 {
     font-family: 'ARCHISCULPTURE_v200' !important;
+    margin: 20px;
 }
 
 #header .intro {
@@ -225,7 +224,6 @@ body {
     word-wrap: break-word;
 }
 
-/* sns */
 .sns {
     cursor: default;
 }
@@ -234,7 +232,6 @@ body {
     margin-right: 10px;
 }
 
-/* 날짜, 시간 */
 .clock .time {
     margin-right: 10px;
 }

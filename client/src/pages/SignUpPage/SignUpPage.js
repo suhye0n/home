@@ -19,11 +19,9 @@ const SignUpPage = () => {
         password2,
       });
 
-      // User registration successful
       console.log(response.data);
       navigate("/login");
     } catch (error) {
-      // User registration failed
       console.error(error);
       setError("Failed to register. Please try again.");
     }
@@ -31,28 +29,28 @@ const SignUpPage = () => {
 
   return (
     <div>
-      <h2>Sign Up</h2>
+      <h2>회원가입</h2>
       {error && <p>{error}</p>}
       <form onSubmit={handleSignUp}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="아이디"
           value={username}
           onChange={e => setUsername(e.target.value)}
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="비번"
           value={password1}
           onChange={e => setPassword1(e.target.value)}
         />
         <input
           type="password"
-          placeholder="Confirm Password"
+          placeholder="비번 한 번 더"
           value={password2}
           onChange={e => setPassword2(e.target.value)}
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit">회원가입</button>
       </form>
     </div>
   );

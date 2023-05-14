@@ -1,45 +1,44 @@
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
 .login-container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 850px;
-  max-height: 450px;
+  max-width: calc(84vw - 70px);
+  max-height: 74vh;
   width: 90%;
-  height: 80%;
-  overflow: hidden;
+  height: 50%;
+  padding: 50px;
+  overflow: auto;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 7px 7px 30px #ccc;
-  }
-  
-  .login-title {
-    font-size: 24px;
-    margin-bottom: 16px;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-  }
-  
-  .login-input {
-    padding: 8px;
-    margin-bottom: 8px;
-  }
-  
-  .login-button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
+  background: var(--point2);
+  border-radius: 5px;
+  border: 1px solid;
+  border-color: var(--text);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 3px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  transition: width 1s, height 1s;
+}
+
+.login-container input {
+  border-radius: 5px;
+  padding: 20px;
+  display: block;
+  margin: 10px auto;
+  border: 1px solid;
+  border-color: var(--text);
+}
+
+.login-button {
+  position: relative;
+  width: 300px;
+  border: none;
+  border-radius: 8px;
+  background: var(--point2);
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  outline: none;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+}

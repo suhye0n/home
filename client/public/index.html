@@ -1,32 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" class="theme-light">
 
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23FDB4BF'/%3E%3C/svg%3E">
+  <!--<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />-->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#FDB4BF" />
   <meta name="description" content="Web site created using create-react-app" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
   <meta name="robots" content="noindex, nofollow">
   <meta name="Googlebot" content="noindex, nofollow">
   <meta name="Naverbot" content="noindex, nofollow">
   <meta name="Daumoa" content="noindex, nofollow">
-  <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
   <title>수현이네집</title>
   <style>
     @font-face {
@@ -59,7 +48,6 @@
       color: var(--point);
     }
 
-    /* 입력창 폰트 색상 */
     ::-webkit-input-placeholder {
       color: var(--text);
     }
@@ -76,7 +64,6 @@
       color: var(--text);
     }
 
-    /* 마우스 드래그 블럭 */
     ::selection {
       color: var(--point);
       background-color: var(--text);
@@ -87,7 +74,6 @@
       background-color: var(--text);
     }
 
-    /* 스크롤바 */
     ::-webkit-scrollbar {
       width: 10px;
       height: 10px;
@@ -116,12 +102,12 @@
     }
 
     .theme-light {
-      --bg: #ffcccc;
+      --bg: #FFDDDD;
       --text: #000;
       --point: #ffcccc;
-      --point2: #ff99cc;
-      --point3: #ff6699;
-      --point4: #ff66cc;
+      --point2: #FDB4BF;
+      --point3: #F7F5FE;
+      --point4: #F7F5FE;
       --con: #ff99cc;
     }
 
@@ -147,18 +133,11 @@
 
   <script type="text/javascript">
     // <![CDATA[
-    var colours = new Array('#A3E7D8', '#FFDDDD', '#F7F5FE', '#FFFF88', '#FDB4BF', '#B3B3D9'); // colours of the hearts
-    var minisize = 16; // smallest size of hearts in pixels
-    var maxisize = 28; // biggest size of hearts in pixels
-    var hearts = 66; // maximum number of hearts on screen
-    var over_or_under = "over"; // set to "over" for hearts to always be on top, or "under" to allow them to float behind other objects
-
-    /*****************************
-    *JavaScript Love Heart Cursor*
-    *  (c)2013+ mf2fm web-design *
-    *   http://www.mf2fm.com/rv  *
-    *  DON'T EDIT BELOW THIS BOX *
-    *****************************/
+    var colours = new Array('#A3E7D8', '#FFDDDD', '#F7F5FE', '#FFFF88', '#FDB4BF', '#B3B3D9');
+    var minisize = 3;
+    var maxisize = 13;
+    var hearts = 10;
+    var over_or_under = "over";
     var x = ox = 400;
     var y = oy = 300;
     var swide = 800;

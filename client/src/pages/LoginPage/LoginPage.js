@@ -30,7 +30,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>로그인!!</h2>
       <form className="login-container" onSubmit={handleLogin}>
         <input
           type="text"
@@ -44,7 +44,9 @@ const LoginPage = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <button className="login-button" type="submit">
+          로그인
+        </button>
         {error && <p>{error}</p>}
         <Link to="/signup">회원가입</Link>
       </form>

@@ -261,40 +261,21 @@ const HomePage = () => {
       <header id="header">
         <div class="left">
           <div class="title" alt="Home">
-            <a href="/">수현이네집</a>
+            <a href="/">
+              <i className="xi-home"></i>
+            </a>
           </div>
         </div>
         <div class="center"></div>
         <div class="right">
-          <div class="intro">안녕하세용</div>
+          <div class="intro">수현이네집</div>
           <div class="sns">
-            <a
-              href="//www.facebook.com/claphye0n"
-              target="_blank"
-              class="tooltip"
-              alt="Facebook">
-              <i class="xi-facebook"></i>
-            </a>
             <a
               href="//www.instagram.com/claphye0n"
               target="_blank"
               class="tooltip"
               alt="Instagram">
               <i class="xi-instagram" aria-hidden="true"></i>
-            </a>
-            <a
-              href="//twitter.com/claphye0n"
-              target="_blank"
-              class="tooltip"
-              alt="Twitter">
-              <i class="xi-twitter" aria-hidden="true"></i>
-            </a>
-            <a
-              href="//youtube.com"
-              target="_blank"
-              class="tooltip"
-              alt="Youtube">
-              <i class="xi-youtube"></i>
             </a>
           </div>
           <div className={`theme ${isDarkMode ? "theme-dark" : "theme-light"}`}>
@@ -305,10 +286,6 @@ const HomePage = () => {
                 <i className="xi-night" aria-hidden="true"></i>
               )}
             </div>
-          </div>
-
-          <div className="battery">
-            <i className="xi-battery-90"></i>
           </div>
           <div class="clock">
             <span class="time" alt="Time">
@@ -334,6 +311,13 @@ const HomePage = () => {
         }}
         className="button">
         <i className="xi-pen-o"></i>
+      </button>
+      <button
+        onClick={() => {
+          alert("수현집에서만 플레이 할 수 있는 강아지 게임 오픈 예정!!!");
+        }}
+        className="button">
+        <i className="xi-piggy-bank"></i>
       </button>
       <button
         onClick={() => {
@@ -383,6 +367,7 @@ const HomePage = () => {
                 기타
               </button>
             </div>
+            <h2>수현피씨방</h2>
             <div className="food-slider">
               <Slider {...sliderSettings}>
                 {categories[currentCategory].map((food, index) => (
