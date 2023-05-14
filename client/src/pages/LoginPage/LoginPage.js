@@ -18,16 +18,11 @@ const LoginPage = () => {
         password,
       });
 
-      // Save currentPoints to localStorage
-      localStorage.setItem("currentPoints", "100");
       localStorage.setItem("isLogin", true);
 
       navigate("/");
-
-      // Handle successful login here (e.g., redirect to another page)
       console.log(response.data);
     } catch (error) {
-      // Handle login error here
       setError("Invalid username or password");
       console.error(error);
     }

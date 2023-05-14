@@ -1,20 +1,51 @@
-.title {
-    font-family: 'ARCHISCULPTURE_v200' !important;
-    font-size: 80px;
-}
-
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 850px;
+    max-width: calc(84vw - 70px);
+    max-height: 83vh;
     width: 90%;
     height: 90%;
-    overflow: hidden;
+    overflow: auto;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 7px 7px 30px #ccc;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 5px;
+    border: 1px solid;
+    border-color: var(--text);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 3px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    transition: width 1s, height 1s;
+}
+
+.category-buttons {
+    background-color: var(--point2);
+    position: relative;
+    border-bottom: 1px solid;
+    border-color: var(--text);
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    min-height: 34px;
+}
+
+.category-buttons button {
+    position: relative;
+    width: 300px;
+    border: none;
+    border-radius: 8px;
+    background: var(--point2);
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+    outline: none;
+    cursor: pointer;
 }
 
 .grid {
@@ -24,25 +55,53 @@
     margin-top: 20px;
 }
 
+.food-slider {
+    width: 80%;
+    margin-left: 10%;
+}
+
 .food-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border: 1px solid var(--point4);
+    border-radius: 5px;
     text-align: center;
 }
 
+.food-info {
+    margin-left: 20px;
+}
+
 .food-img {
-    width: 100px;
-    height: 100px;
+    width: 180px;
+    height: 180px;
+    margin: 40px 70px 5px 5px;
     object-fit: cover;
-    border-radius: 50%;
+    border: 1px solid var(--point4);
+    border-radius: 5px;
 }
 
 .food-card p {
     margin: 10px 0;
+}
+
+.quantity-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 16px;
+
+}
+
+.delete-btn {
+    color: red;
+    margin-right: -20px;
+    display: inline-block;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 16px;
 }
 
 .button {
@@ -50,29 +109,132 @@
     width: 300px;
     padding: 16px;
     border: none;
-    border-bottom: 5px solid #ad7900;
-    border-radius: 8px;
-    background: #fab70f;
-    color: white;
-    font-size: 2.4rem;
+    border-radius: 5px;
+    background: transparent;
+    margin: 20px auto;
+    color: var(--text);
+    display: block;
     font-weight: bold;
-    font-family: 'Raleway', sans-serif;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
     outline: none;
     cursor: pointer;
     transition-property: background, color;
     transition-duration: 0.2s;
+}
 
-    &:hover {
-        background: #d49b0d;
-        border-bottom-color: #946800;
-        color: #eee;
-    }
+.button:hover {
+    color: #eee;
+}
 
-    &:active {
-        bottom: -3px;
-        border-bottom: 2px solid #543c00;
-        background: #a17300;
-        color: #ada48b;
-    }
+.button:active {
+    bottom: -3px;
+}
+
+body {
+    background-color: var(--bg);
+}
+
+.selected-foods-list {
+    background-color: var(--point2);
+    border-radius: 5px;
+    border: 1px solid var(--text);
+    margin: 50px;
+    padding: 40px;
+}
+
+.selected-food-info {
+    border-bottom: 1px dashed;
+}
+
+#header {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    justify-content: space-between;
+    padding: 0 20px;
+    cursor: default;
+    border-bottom: 1px solid var(--text);
+    font-weight: bold;
+    z-index: 9999;
+    color: white;
+}
+
+#header a {
+    color: white;
+}
+
+#header:after,
+.YACSSTooltip:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-color: var(--point2);
+}
+
+
+#header .center {
+    flex-grow: 1;
+    height: 100%;
+}
+
+#header .toggle,
+#header .title a,
+#header .left>.search-box,
+#header .left>.blogmenu a,
+#header .intro,
+#header .sns,
+#header .theme,
+#header .battery,
+#header .clock,
+#header .side {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    position: relative;
+}
+
+#header a:hover,
+#header .toggle:hover,
+#header .search-box:hover,
+#header .side:hover {
+    color: var(--text);
+}
+
+#header,
+#header>div,
+#header .left>.blogmenu>ul,
+.search-box,
+.sns a {
+    display: flex;
+    align-items: center;
+}
+
+/* 타이틀 */
+#header .title {
+    font-family: 'ARCHISCULPTURE_v200' !important;
+}
+
+#header .intro {
+    word-break: normal;
+    word-wrap: break-word;
+}
+
+/* sns */
+.sns {
+    cursor: default;
+}
+
+.sns a:not(:last-child) {
+    margin-right: 10px;
+}
+
+/* 날짜, 시간 */
+.clock .time {
+    margin-right: 10px;
 }

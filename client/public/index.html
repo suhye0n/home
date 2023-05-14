@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="Googlebot" content="noindex, nofollow">
+  <meta name="Naverbot" content="noindex, nofollow">
+  <meta name="Daumoa" content="noindex, nofollow">
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -24,29 +27,309 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
-    <style>
-      @font-face {
-        font-family: 'omyu_pretty';
-        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
+  <title>수현이네집</title>
+  <style>
+    @font-face {
+      font-family: 'omyu_pretty';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
     }
+
     @font-face {
       font-family: 'ARCHISCULPTURE_v200';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2303@1.0/ARCHISCULPTURE_v200.woff2') format('woff2');
       font-weight: normal;
       font-style: normal;
     }
+
     * {
-        font-family: 'omyu_pretty' !important;
+      font-family: 'omyu_pretty' !important;
     }
-    </style>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
+
+    a,
+    a:link {
+      text-decoration: none;
+      color: var(--text);
+      transition: color .4s;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--point);
+    }
+
+    /* 입력창 폰트 색상 */
+    ::-webkit-input-placeholder {
+      color: var(--text);
+    }
+
+    :-moz-placeholder {
+      color: var(--text);
+    }
+
+    :-ms-input-placeholder {
+      color: var(--text);
+    }
+
+    ::placeholder {
+      color: var(--text);
+    }
+
+    /* 마우스 드래그 블럭 */
+    ::selection {
+      color: var(--point);
+      background-color: var(--text);
+    }
+
+    ::-moz-selection {
+      color: var(--point);
+      background-color: var(--text);
+    }
+
+    /* 스크롤바 */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      background-color: var(--point4);
+      border-left: 1px solid;
+      border-color: var(--text);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--point2);
+      border: 1px solid;
+      border-right: 0;
+      border-color: var(--text);
+      border-radius: 5px;
+    }
+
+    body {
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-color: var(--bg);
+    }
+
+    .theme-light {
+      --bg: #ffcccc;
+      --text: #000;
+      --point: #ffcccc;
+      --point2: #ff99cc;
+      --point3: #ff6699;
+      --point4: #ff66cc;
+      --con: #ff99cc;
+    }
+
+    .theme-dark {
+      --bg: #330033;
+      --text: #993366;
+      --point: #330033;
+      --point2: #660066;
+      --point3: #FDB4BF;
+      --point4: #660066;
+      --con: #330033;
+    }
+
+
+    body {
+      color: var(--text);
+    }
+
+    * {
+      cursor: url(./cur.cur), auto !important;
+    }
+  </style>
+
+  <script type="text/javascript">
+    // <![CDATA[
+    var colours = new Array('#A3E7D8', '#FFDDDD', '#F7F5FE', '#FFFF88', '#FDB4BF', '#B3B3D9'); // colours of the hearts
+    var minisize = 16; // smallest size of hearts in pixels
+    var maxisize = 28; // biggest size of hearts in pixels
+    var hearts = 66; // maximum number of hearts on screen
+    var over_or_under = "over"; // set to "over" for hearts to always be on top, or "under" to allow them to float behind other objects
+
+    /*****************************
+    *JavaScript Love Heart Cursor*
+    *  (c)2013+ mf2fm web-design *
+    *   http://www.mf2fm.com/rv  *
+    *  DON'T EDIT BELOW THIS BOX *
+    *****************************/
+    var x = ox = 400;
+    var y = oy = 300;
+    var swide = 800;
+    var shigh = 600;
+    var sleft = sdown = 0;
+    var herz = new Array();
+    var herzx = new Array();
+    var herzy = new Array();
+    var herzs = new Array();
+    var kiss = false;
+
+    if (typeof ('addRVLoadEvent') != 'function') function addRVLoadEvent(funky) {
+      var oldonload = window.onload;
+      if (typeof (oldonload) != 'function') window.onload = funky;
+      else window.onload = function () {
+        if (oldonload) oldonload();
+        funky();
+      }
+    }
+
+    addRVLoadEvent(mwah);
+
+    function mwah() {
+      if (document.getElementById) {
+        var i, heart;
+        for (i = 0; i < hearts; i++) {
+          heart = createDiv("auto", "auto");
+          heart.style.visibility = "hidden";
+          heart.style.zIndex = (over_or_under == "over") ? "1001" : "0";
+          heart.style.color = colours[i % colours.length];
+          heart.style.pointerEvents = "none";
+          if (navigator.appName == "Microsoft Internet Explorer") heart.style.filter = "alpha(opacity=75)";
+          else heart.style.opacity = 0.75;
+          heart.appendChild(document.createTextNode(String.fromCharCode(9829)));
+          document.body.appendChild(heart);
+          herz[i] = heart;
+          herzy[i] = false;
+        }
+        set_scroll();
+        set_width();
+        herzle();
+      }
+    }
+
+    function herzle() {
+      var c;
+      if (Math.abs(x - ox) > 1 || Math.abs(y - oy) > 1) {
+        ox = x;
+        oy = y;
+        for (c = 0; c < hearts; c++) if (herzy[c] === false) {
+          herz[c].firstChild.nodeValue = String.fromCharCode(9829);
+          herz[c].style.left = (herzx[c] = x - minisize / 2) + "px";
+          herz[c].style.top = (herzy[c] = y - minisize) + "px";
+          herz[c].style.fontSize = minisize + "px";
+          herz[c].style.fontWeight = 'normal';
+          herz[c].style.visibility = 'visible';
+          herzs[c] = minisize;
+          break;
+        }
+      }
+      for (c = 0; c < hearts; c++) if (herzy[c] !== false) blow_me_a_kiss(c);
+      setTimeout("herzle()", 40);
+    }
+
+    document.onmousedown = pucker;
+    document.onmouseup = function () { clearTimeout(kiss); };
+
+    function pucker() {
+      ox = -1;
+      oy = -1;
+      kiss = setTimeout('pucker()', 100);
+    }
+
+    function blow_me_a_kiss(i) {
+      herzy[i] -= herzs[i] / minisize + i % 2;
+      herzx[i] += (i % 5 - 2) / 5;
+      if (herzy[i] < sdown - herzs[i] || herzx[i] < sleft - herzs[i] || herzx[i] > sleft + swide - herzs[i]) {
+        herz[i].style.visibility = "hidden";
+        herzy[i] = false;
+      }
+      else if (herzs[i] > minisize + 2 && Math.random() < .5 / hearts) break_my_heart(i);
+      else {
+        if (Math.random() < maxisize / herzy[i] && herzs[i] < maxisize) herz[i].style.fontSize = (++herzs[i]) + "px";
+        herz[i].style.top = herzy[i] + "px";
+        herz[i].style.left = herzx[i] + "px";
+      }
+    }
+
+    function break_my_heart(i) {
+      var t;
+      herz[i].firstChild.nodeValue = String.fromCharCode(9676);
+      herz[i].style.fontWeight = 'bold';
+      herzy[i] = false;
+      for (t = herzs[i]; t <= maxisize; t++) setTimeout('herz[' + i + '].style.fontSize="' + t + 'px"', 60 * (t - herzs[i]));
+      setTimeout('herz[' + i + '].style.visibility="hidden";', 60 * (t - herzs[i]));
+    }
+
+    document.onmousemove = mouse;
+    function mouse(e) {
+      if (e) {
+        y = e.pageY;
+        x = e.pageX;
+      }
+      else {
+        set_scroll();
+        y = event.y + sdown;
+        x = event.x + sleft;
+      }
+    }
+
+    window.onresize = set_width;
+    function set_width() {
+      var sw_min = 999999;
+      var sh_min = 999999;
+      if (document.documentElement && document.documentElement.clientWidth) {
+        if (document.documentElement.clientWidth > 0) sw_min = document.documentElement.clientWidth;
+        if (document.documentElement.clientHeight > 0) sh_min = document.documentElement.clientHeight;
+      }
+      if (typeof (self.innerWidth) == 'number' && self.innerWidth) {
+        if (self.innerWidth > 0 && self.innerWidth < sw_min) sw_min = self.innerWidth;
+        if (self.innerHeight > 0 && self.innerHeight < sh_min) sh_min = self.innerHeight;
+      }
+      if (document.body.clientWidth) {
+        if (document.body.clientWidth > 0 && document.body.clientWidth < sw_min) sw_min = document.body.clientWidth;
+        if (document.body.clientHeight > 0 && document.body.clientHeight < sh_min) sh_min = document.body.clientHeight;
+      }
+      if (sw_min == 999999 || sh_min == 999999) {
+        sw_min = 800;
+        sh_min = 600;
+      }
+      swide = sw_min;
+      shigh = sh_min;
+    }
+
+    window.onscroll = set_scroll;
+    function set_scroll() {
+      if (typeof (self.pageYOffset) == 'number') {
+        sdown = self.pageYOffset;
+        sleft = self.pageXOffset;
+      }
+      else if (document.body && (document.body.scrollTop || document.body.scrollLeft)) {
+        sdown = document.body.scrollTop;
+        sleft = document.body.scrollLeft;
+      }
+      else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {
+        sleft = document.documentElement.scrollLeft;
+        sdown = document.documentElement.scrollTop;
+      }
+      else {
+        sdown = 0;
+        sleft = 0;
+      }
+    }
+
+    function createDiv(height, width) {
+      var div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.height = height;
+      div.style.width = width;
+      div.style.overflow = "hidden";
+      div.style.backgroundColor = "transparent";
+      return (div);
+    }
+    // ]]>
+  </script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -56,5 +339,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>

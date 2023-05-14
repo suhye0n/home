@@ -3,10 +3,6 @@
   padding:0;
   box-sizing:border-box;
 }
-body{
-  background:pink;
-  font-family:sans-serif;
-}
 
 .login-container {
   position: fixed;

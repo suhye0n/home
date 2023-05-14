@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./HomePage.css";
 import Image1 from "../../assets/불닭쌈.jpg";
+import Image2 from "../../assets/오므라이스.jpg";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
@@ -17,6 +18,28 @@ const HomePage = () => {
   const [selectedFoodsList, setSelectedFoodsList] = useState([]);
   const [totalPoints, setTotalPoints] = useState(0);
   const [currentPoints, setCurrentPoints] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const handleModeToggle = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  useEffect(() => {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.remove("theme-dark", "theme-light");
+    htmlElement.classList.add(isDarkMode ? "theme-dark" : "theme-light");
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const categories = {
     recommend: [
@@ -26,10 +49,56 @@ const HomePage = () => {
         image: Image1,
         points: "3",
       },
-      { name: "음식 이름1", image: "이미지 URL", points: "2" },
-      { name: "음식 이름2", image: "이미지 URL", points: "1" },
-      { name: "음식 이름3", image: "이미지 URL", points: "4" },
-      { name: "음식 이름4", image: "이미지 URL", points: "5" },
+      {
+        name: "오므라이스",
+        image: Image2,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
+      {
+        name: "불닭쌈",
+        image: Image1,
+        points: "3",
+      },
     ],
     rice: [
       // 밥류 데이터
@@ -95,7 +164,21 @@ const HomePage = () => {
         setSelectedFoodsList([]);
         setTotalPoints(0);
       } else {
-        alert("포인트가 부족하여 주문할 수 없습니다.");
+        const response = await axios.post(
+          "http://localhost:8000/api/place_order/",
+          {
+            selectedFoodsList: selectedFoodsList,
+            menu_names: menuNames,
+            quantities: quantities,
+            order_number: "0",
+            customer_name: "고객명",
+          }
+        );
+
+        setOrderStatus(response.data.message);
+        setCurrentPoints(prevPoints => prevPoints - totalOrderPoints);
+        setSelectedFoodsList([]);
+        setTotalPoints(0);
       }
     } catch (error) {
       console.error(error);
@@ -175,23 +258,82 @@ const HomePage = () => {
 
   return (
     <div>
-      <h2 className="title">수현이네 집</h2>
+      <header id="header">
+        <div class="left">
+          <div class="title" alt="Home">
+            <a href="/">수현이네집</a>
+          </div>
+        </div>
+        <div class="center"></div>
+        <div class="right">
+          <div class="intro">안녕하세용</div>
+          <div class="sns">
+            <a
+              href="//www.facebook.com/claphye0n"
+              target="_blank"
+              class="tooltip"
+              alt="Facebook">
+              <i class="xi-facebook"></i>
+            </a>
+            <a
+              href="//www.instagram.com/claphye0n"
+              target="_blank"
+              class="tooltip"
+              alt="Instagram">
+              <i class="xi-instagram" aria-hidden="true"></i>
+            </a>
+            <a
+              href="//twitter.com/claphye0n"
+              target="_blank"
+              class="tooltip"
+              alt="Twitter">
+              <i class="xi-twitter" aria-hidden="true"></i>
+            </a>
+            <a
+              href="//youtube.com"
+              target="_blank"
+              class="tooltip"
+              alt="Youtube">
+              <i class="xi-youtube"></i>
+            </a>
+          </div>
+          <div className={`theme ${isDarkMode ? "theme-dark" : "theme-light"}`}>
+            <div onClick={handleModeToggle}>
+              {isDarkMode ? (
+                <i className="xi-sun" aria-hidden="true"></i>
+              ) : (
+                <i className="xi-night" aria-hidden="true"></i>
+              )}
+            </div>
+          </div>
+
+          <div className="battery">
+            <i className="xi-battery-90"></i>
+          </div>
+          <div class="clock">
+            <span class="time" alt="Time">
+              {currentTime.toLocaleTimeString()}
+            </span>
+            <span class="date" alt="Date"></span>
+          </div>
+        </div>
+      </header>
       <button onClick={openModal} className="button">
-        주문하기
+        <i className="xi-cookie"></i>
       </button>
       <button
         onClick={() => {
           window.location.href = "https://carp.tistory.com";
         }}
         className="button">
-        일기 보기
+        <i className="xi-note-o"></i>
       </button>
       <button
         onClick={() => {
           window.location.href = "https://carp.tistory.com/guestbook";
         }}
         className="button">
-        방명록 남기기
+        <i className="xi-pen-o"></i>
       </button>
       <button
         onClick={() => {
@@ -199,7 +341,7 @@ const HomePage = () => {
           window.location.href = "/login";
         }}
         className="button">
-        로그아웃 하기
+        <i className="xi-log-out"></i>
       </button>
       {showModal && (
         <div className="modal">
@@ -242,7 +384,6 @@ const HomePage = () => {
               </button>
             </div>
             <div className="food-slider">
-              <div className="current-points">현재 포인트: {currentPoints}</div>
               <Slider {...sliderSettings}>
                 {categories[currentCategory].map((food, index) => (
                   <div
@@ -256,19 +397,21 @@ const HomePage = () => {
                     />
                     <div className="food-info">
                       <h3>{food.name}</h3>
-                      <p>{food.points} 포인트</p>
                     </div>
                   </div>
                 ))}
               </Slider>
             </div>
             <div className="selected-foods-list">
-              <h3>선택한 음식</h3>
               {selectedFoodsList.map((food, index) => (
                 <div key={index} className="selected-food-item">
                   <div className="selected-food-info">
-                    <h4>{food.name}</h4>
-                    <p>포인트: {food.points}</p>
+                    <h4 style={{ display: "inline" }}>{food.name}</h4>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleRemoveFood(index)}>
+                      x
+                    </button>
                     <div className="food-quantity">
                       <button
                         className="quantity-btn"
@@ -286,17 +429,17 @@ const HomePage = () => {
                         +
                       </button>
                     </div>
-                    <button onClick={() => handleRemoveFood(index)}>
-                      삭제
-                    </button>
                   </div>
                 </div>
               ))}
-              <p>총 주문 포인트: {totalPoints}</p>
+              <button className="button" onClick={handleOrder}>
+                <i className="xi-cookie xi-spin"></i>
+              </button>
+              {orderStatus && <p>{orderStatus}</p>}
             </div>
-            <button onClick={handleOrder}>주문</button>
-            {orderStatus && <p>{orderStatus}</p>}
-            <button onClick={closeModal}>닫기</button>
+            <button className="button" onClick={closeModal}>
+              <i className="xi-close-square-o"></i>
+            </button>
           </div>
         </div>
       )}
